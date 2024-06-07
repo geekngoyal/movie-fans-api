@@ -2,21 +2,8 @@ var express = require('express');
 var router = express.Router();
 const movieDetails = require('../data/movieDetails'); 
 
-const queryIsReq = (req, res, next) => {
-  const searchTerm = req.query.query;
-  if(!searchTerm) {
-    res.json({msg : "query is required"});
-  } else {
-    next();
-  }
-}   
 
-router.use(queryIsReq);
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
 
 router.get('/top_rated', (req, res, next) => {
   let { page } = req.query;
@@ -27,6 +14,7 @@ router.get('/top_rated', (req, res, next) => {
   const results = movieDetails.sort((a, b) => {
     return b.vote_average - a.vote_average;
   })
+  console.log(results);
   const indexToStart = (page - 1) * 20;
   res.json(results.slice(results.slice(indexToStart, indexToStart  +20)))
 });
